@@ -1,20 +1,27 @@
 <div class="container">
     <div class="todo-list">
 
-    <form (ngSubmit)="add(taskNgForm);" #taskNgForm="ngForm">    
+    <form (ngSubmit)="add(taskNgForm);" #taskNgForm="ngForm" #form>    
 
         <div class="input-group">
-            <input name="date" [matDatepicker]="picker" [(ngModel)]="date">
+            <input readonly name="date" [matDatepicker]="picker" [(ngModel)]="date">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </div>
 
         <div class="input-group">
-            <input #newTask="ngModel" required name="taskTitle" type="text" placeholder="Todo" [(ngModel)]="newTaskTitle">
-            <button class="add-button">+</button>
+            <input #newTask="ngModel" required minlength="4" name="taskTitle" type="text" placeholder="Todo" [(ngModel)]="newTaskTitle">
+            <button [disabled]="!form.checkValidity()" class="add-button">+</button>
         </div>
 
-        <div *ngIf="newTask.invalid && (newTask.touched || newTask.dirty)" class="validation-error">Task title is required </div>
+        <div *ngIf="newTask.invalid && (newTask.touched || newTask.dirty)" class="validation-error">
+            <div *ngIf="newTask.errors?.['required']">
+                Invalid input! Task title is required.
+            </div> 
+            <div *ngIf="newTask.errors?.['minlength']">
+                Invalid input! Task title must have at least 4 characters.
+            </div>
+        </div>
 
     </form>
 
