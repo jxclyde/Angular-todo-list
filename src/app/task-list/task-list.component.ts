@@ -1,4 +1,6 @@
+import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Route } from '@angular/router';
 
 @Component({
@@ -10,9 +12,11 @@ export class TaskListComponent {
 
   constructor(private route: ActivatedRoute) { }
   
+  newTaskTitle: string = "";
+  date: Date = new Date();
+
   ngOnInit(): void { 
-    var date: Date = new Date(this.route.snapshot.params['date']);
-    console.log(date);
+    this.date = new Date(this.route.snapshot.params['date']);
   }
   
   tasks: Task[] = [
@@ -23,9 +27,19 @@ export class TaskListComponent {
     new Task("Shop for the party")
   ]
 
-  add(newTask: string)
+  add(taskNgForm: NgForm)
   {
-    this.tasks.push(new Task(newTask));
+    if (taskNgForm.touched == false )
+    {
+      return;
+    }
+    if (taskNgForm.valid == false)
+    {
+      return  
+    }
+
+    this.tasks.push(new Task(this.newTaskTitle));
+    taskNgForm.reset({date: this.date});
   }
 
   remove(existingTask: Task)

@@ -102,3 +102,13 @@ td {
 .is-done {
     text-decoration: line-through;
 }
+
+p {
+    line-height: 50px;
+}
+
+.validation-error{
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
